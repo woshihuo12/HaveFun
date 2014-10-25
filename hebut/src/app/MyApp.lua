@@ -2,6 +2,7 @@
 require("config")
 require("framework.init")
 require("SwitchScene")
+require("GameTools")
 
 local MyApp = class("MyApp", cc.mvc.AppBase)
 
