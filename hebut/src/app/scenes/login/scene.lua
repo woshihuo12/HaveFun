@@ -6,39 +6,53 @@ local bgLayer = class("bgLayer", function ()
 end)
 
 function bgLayer:ctor()
-    self:setNodeEventEnabled(true)
+    -- self:setNodeEventEnabled(true)
     display.newSprite("#bg.jpg")
         :align(display.CENTER, display.cx, display.cy)
         :addTo(self)
 end
 
-function bgLayer:onEnter()
-    print("bgLayer:onEnter")
-end
+-- function bgLayer:onEnter()
+--     print("bgLayer:onEnter")
+-- end
 
 --[[
     用户名密码Layer
 --]]
-local NameAndPasswdLayer = {}
-function NameAndPasswdLayer:new()
-    local this = {}
-    setmetatable(this , self)
-    self.__index = self
+local NameAndPasswdLayer = class("NameAndPasswdLayer", function ()
+    return display.newLayer()
+end)
 
-    this.layer = display.newLayer()
-    this.layer:setNodeEventEnabled(true)
-
+function NameAndPasswdLayer:ctor()
+    self:setNodeEventEnabled(true)
     local boxBg = cc.ui.UIImage.new("#box_bg.png")
         :align(display.CENTER, display.cx, display.bottom + 200)
-        :addTo(this.layer)
+        :addTo(self)
 
-    cc.ui.UIImage.new("#input_bg.png")
-        :align(display.CENTER, display.cx + 40, display.bottom + 85)
-        :addTo(boxBg)
+    -- cc.ui.UIImage.new("#input_bg.png")
+    --     :align(display.CENTER, display.cx + 40, display.bottom + 85)
+    --     :addTo(boxBg)
 
-    cc.ui.UIImage.new("#input_bg.png")
-        :align(display.CENTER, display.cx + 40, display.bottom + 45)
-        :addTo(boxBg)
+    -- cc.ui.UIImage.new("#input_bg.png")
+    --     :align(display.CENTER, display.cx + 40, display.bottom + 45)
+    --     :addTo(boxBg)
+    local nameField = cc.ui.UIInput.new({
+        image = "#input_bg.png",
+        x = display.cx + 30,
+        y = display.bottom + 82,
+        size = cc.size(230, 30)
+        })
+    nameField:addTo(boxBg)
+    nameField:setPlaceHolder("HelloWorld")
+
+    local passwdField = cc.ui.UIInput.new({
+        image = "#input_bg.png",
+        x = display.cx + 30,
+        y = display.bottom + 42,
+        size = cc.size(230, 30)
+        })
+    passwdField:addTo(boxBg)
+    passwdField:setInputFlag(0)
 
     cc.ui.UIPushButton.new({normal = "#register.png", pressed = "#register_pre.png"})
         :align(display.CENTER_RIGHT, display.right - 5, display.bottom + 65)
@@ -49,9 +63,11 @@ function NameAndPasswdLayer:new()
 
     local enterBtn = cc.ui.UIPushButton.new({normal = "#select_btn.png", pressed = "#select_btn_pre.png"})
         :align(display.CENTER, display.cx, display.bottom + 100)
-        :addTo(this.layer)
+        :addTo(self)
         :onButtonClicked(function ()
-            print("hello world")
+            local name = nameField:getText()
+            local passwd = passwdField:getText()
+            print(name .. " " .. passwd)
         end)
 
     cc.ui.UIImage.new("#fast_game.png")
@@ -63,14 +79,64 @@ function NameAndPasswdLayer:new()
                 cc.ScaleTo:create(0.5, 1, 1),
             })
     enterBtn:runAction(cc.RepeatForever:create(sequence))
-
-    function this.layer:onEnter()
-        setAnchPos(self, 0, -display.cy)
-        transition.moveTo(self, {time = 0.5, y = 0 , easing = "BACKOUT" })
-    end
-
-    return this.layer
 end
+
+function NameAndPasswdLayer:onEnter()
+    setAnchPos(self, 0, -display.cy)
+    transition.moveTo(self, {time = 0.5, y = 0 , easing = "BACKOUT" })
+end
+-- local NameAndPasswdLayer = {}
+-- function NameAndPasswdLayer:new()
+--     local this = {}
+--     setmetatable(this , self)
+--     self.__index = self
+
+--     this.layer = display.newLayer()
+--     this.layer:setNodeEventEnabled(true)
+
+--     local boxBg = cc.ui.UIImage.new("#box_bg.png")
+--         :align(display.CENTER, display.cx, display.bottom + 200)
+--         :addTo(this.layer)
+
+--     cc.ui.UIImage.new("#input_bg.png")
+--         :align(display.CENTER, display.cx + 40, display.bottom + 85)
+--         :addTo(boxBg)
+
+--     cc.ui.UIImage.new("#input_bg.png")
+--         :align(display.CENTER, display.cx + 40, display.bottom + 45)
+--         :addTo(boxBg)
+
+--     cc.ui.UIPushButton.new({normal = "#register.png", pressed = "#register_pre.png"})
+--         :align(display.CENTER_RIGHT, display.right - 5, display.bottom + 65)
+--         :addTo(boxBg)
+--         :onButtonClicked(function ()
+--             print("register")
+--         end)
+
+--     local enterBtn = cc.ui.UIPushButton.new({normal = "#select_btn.png", pressed = "#select_btn_pre.png"})
+--         :align(display.CENTER, display.cx, display.bottom + 100)
+--         :addTo(this.layer)
+--         :onButtonClicked(function ()
+--             print("hello world")
+--         end)
+
+--     cc.ui.UIImage.new("#fast_game.png")
+--         :align(display.CENTER)
+--         :addTo(enterBtn)
+
+--     local sequence = transition.sequence({
+--                 cc.ScaleTo:create(0.5, 1.2,1.2),
+--                 cc.ScaleTo:create(0.5, 1, 1),
+--             })
+--     enterBtn:runAction(cc.RepeatForever:create(sequence))
+
+--     function this.layer:onEnter()
+--         setAnchPos(self, 0, -display.cy)
+--         transition.moveTo(self, {time = 0.5, y = 0 , easing = "BACKOUT" })
+--     end
+
+--     return this.layer
+-- end
 
 local scene = class("scene", function()
     return display.newScene("scene")
