@@ -1,4 +1,9 @@
 --[[
+    设置垃圾回收
+--]]
+collectgarbage("setpause"  ,  100)
+collectgarbage("setstepmul"  ,  5000)
+--[[
     背景Layer
 --]]
 local bgLayer = class("bgLayer", function ()
